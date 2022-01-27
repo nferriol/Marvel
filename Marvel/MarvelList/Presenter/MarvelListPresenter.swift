@@ -15,21 +15,21 @@ public class MarvelListPresenter: MarvelListPresenterProtocol {
     /// Interactor of the presenter
     var interactor: MarvelListInteractorProtocol?
 
-    /// Method invoke to update the character list
+    /// Method invoked to update the character list
     /// - Parameter offset: Offset of the characters
     func getMarvelCharacters(offset: Int) {
         interactor?.getMarvelCharacters(offset: offset)
     }
 
-    /// Method invoke when the characters list is updated
+    /// Method invoked when the characters list is updated
     /// - Parameter model: charaters list model
     func didGetMarvelCharacters(characters: MarvelCharacters) {
-        let characters: [MarvelCharacterListModel] = [MarvelCharacterListModel].init(marvelCharacters: characters)
+        let characters: [MarvelListCharacterModel] = [MarvelListCharacterModel].init(marvelCharacters: characters)
         let more = characters.count != 0
         view?.didGetMarvelCharacters(model: MarvelListModel(characters: characters, more: more))
     }
 
-    /// Method invoke when the character list update fail
+    /// Method invoked when the character list update fail
     func didFailMarvelCharacters() {
         view?.didFailMarvelCharacters()
     }

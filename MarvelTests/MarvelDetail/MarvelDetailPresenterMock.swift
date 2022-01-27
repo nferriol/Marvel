@@ -2,7 +2,8 @@
 //  MarvelDetailPresenterMock.swift
 //  MarvelTests
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation
@@ -25,5 +26,11 @@ class MarvelDetailPresenterMock: MarvelDetailPresenterProtocol {
 
     func didFailMarvelCharacter() {
         didCallDidFailMarvelCharacter = true
+    }
+    
+    func resetDidCalls() {
+        didCallGetMarvelCharacter = false
+        didCallDidGetMarvelCharacter = false
+        didCallDidFailMarvelCharacter = false
     }
 }

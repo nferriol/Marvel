@@ -2,7 +2,8 @@
 //  MavelCharactersResponse.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 03/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation

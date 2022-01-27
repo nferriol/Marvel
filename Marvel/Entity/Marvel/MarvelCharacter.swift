@@ -2,7 +2,8 @@
 //  MarvelCharacter.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 02/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation
@@ -19,4 +20,14 @@ struct MarvelCharacter: Decodable {
     let stories: MarvelStories
     let thumbnail: MarvelThumbnail
     let urls: [MarvelUrl]
+	
+	var imageURL: String {
+		var returnValue = "\(thumbnail.path).\(thumbnail.extension)"
+
+		if !returnValue.hasPrefix("https") && returnValue.hasPrefix("http")  {
+			returnValue = "https\(returnValue.dropFirst("http".count))"
+		}
+		
+		return returnValue
+	}
 }

@@ -2,7 +2,8 @@
 //  MarvelDetailInteractorProtocol.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation
@@ -16,6 +17,6 @@ protocol MarvelDetailInteractorProtocol {
 
     init(characterId: Int)
     
-    /// Method invoke to get the character detail
+    /// Method invoked to get the character detail
     func getMarvelCharacter()
 }

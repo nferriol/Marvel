@@ -2,24 +2,11 @@
 //  MarvelListViewController.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
-//  Copyright © 2020 Nadal Ferriol. All rights reserved.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit
-
-/// Model of the view
-struct MarvelListModel {
-    
-    /// Character list model
-    let characters: [MarvelCharacterListModel]
-    /// Exist more characters
-    let moreCharacters: Bool
-
-    init(characters: [MarvelCharacterListModel], more: Bool) {
-        (self.characters, self.moreCharacters) = (characters, more)
-    }
-}
 
 class MarvelListViewController: MarvelViewController, MarvelListViewControllerProtocol {
 
@@ -28,9 +15,10 @@ class MarvelListViewController: MarvelViewController, MarvelListViewControllerPr
     /// Pesenter of the view controller
     var presenter: MarvelListPresenterProtocol?
     /// Character list model
-    var characters: [MarvelCharacterListModel] = []
+    private var characters: [MarvelListCharacterModel] = []
     /// Exist more characters
-    var moreCharacters: Bool = false
+    private var moreCharacters: Bool = false
+    private let refreshControl = UIRefreshControl()
 
     class func initFromStoryboard() -> MarvelListViewController {
         let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MarvelListViewController")
@@ -40,30 +28,52 @@ class MarvelListViewController: MarvelViewController, MarvelListViewControllerPr
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        configureMyTableView()
+        
+        configureViewController()
         getMarvelCharacters()
     }
+    
+    func configureViewController() {
+        title = NSLocalizedString("Characters", comment: "")
+        configureNavigationBar()
+        configureMyTableView()
+    }
+    
+    func configureNavigationBar() {
+        navigationController?.navigationBar.barTintColor = UIColor.marvelRed
+        let imageView = UIImageView(image: UIImage(named: "marvelLogo"))
+        imageView.contentMode = .scaleAspectFit
+        self.navigationItem.titleView = imageView
+    }
 
-    /// Method invoke to get more characters
+    /// Method invoked to get more characters
     /// - Parameter offset: characters offset
     func getMarvelCharacters(offset: Int = 0) {
-        if offset == 0 {
+        if offset == 0 && !refreshControl.isRefreshing {
             showSpinner()
         }
         presenter?.getMarvelCharacters(offset: offset)
     }
+    
+    @objc func refresh(_ sender: AnyObject) {
+        getMarvelCharacters(offset: 0)
+    }
 
-    /// Method invoke when the characters list is updated
+    /// Method invoked when the characters list is updated
     /// - Parameter model: charaters list model
     func didGetMarvelCharacters(model: MarvelListModel) {
-        hideSpinner()
-        characters.append(contentsOf: model.characters)
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+            characters = model.characters
+        } else {
+            hideSpinner()
+            characters.append(contentsOf: model.characters)
+        }
         moreCharacters = model.moreCharacters
         myTableView.reloadData()
     }
 
-    /// Method invoke when the character list update fail
+    /// Method invoked when the character list update fail
     func didFailMarvelCharacters() {
         hideSpinner()
         let alert = UIAlertController(title: nil, message: "Get Marvel characters error", preferredStyle: .alert)
@@ -71,7 +81,7 @@ class MarvelListViewController: MarvelViewController, MarvelListViewControllerPr
         self.present(alert, animated: true, completion: nil)
     }
 
-    /// Method invoke to configure the table view
+    /// Method invoked to configure the table view
     func configureMyTableView() {
         let marvelListReuseId: String = MarvelListTableViewCell.reuseId
         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: MarvelListTableViewCell.reuseId)
@@ -85,6 +95,9 @@ class MarvelListViewController: MarvelViewController, MarvelListViewControllerPr
 
         myTableView.dataSource = self
         myTableView.delegate = self
+        
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        myTableView.addSubview(refreshControl)
     }
 }
 
@@ -99,20 +112,24 @@ extension MarvelListViewController: UITableViewDataSource {
 
         if indexPath.row < characters.count {
             let reuseId: String = MarvelListTableViewCell.reuseId
-            if let characterCell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath) as? MarvelListTableViewCell {
-                characterCell.configure(model: characters[indexPath.row])
-                cell = characterCell
+            if let localCell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath) as? MarvelListTableViewCell {
+                localCell.configure(model: characters[indexPath.row], indexPath: indexPath)
+                cell = localCell
             } else {
                 cell = MarvelListTableViewCell()
             }
         } else {
+            let moreCell: MoreListTableViewCell
             let reuseId: String = MoreListTableViewCell.reuseId
-            if let moreCell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath) as? MoreListTableViewCell {
-                cell = moreCell
+            if let localCell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath) as? MoreListTableViewCell {
+                moreCell = localCell
             } else {
-                cell = MoreListTableViewCell()
+                moreCell = MoreListTableViewCell()
             }
-
+            
+            moreCell.startAnimating()
+            cell = moreCell
+            
             presenter?.getMarvelCharacters(offset: characters.count)
         }
 
@@ -126,3 +143,4 @@ extension MarvelListViewController: UITableViewDelegate {
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
+

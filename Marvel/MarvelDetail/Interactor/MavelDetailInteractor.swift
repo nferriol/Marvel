@@ -2,7 +2,8 @@
 //  MavelDetailInteractor.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation
@@ -20,7 +21,7 @@ public class MarvelDetailInteractor: MarvelDetailInteractorProtocol {
         self.characterId = characterId
     }
 
-    /// Method invoke to get the character detail
+    /// Method invoked to get the character detail
     func getMarvelCharacter() {
         entity?.getCharacter(id: characterId, completion: { (marvelCharacter) in
             self.presenter?.didGetMarvelCharacter(character: marvelCharacter)

@@ -2,7 +2,8 @@
 //  MarvelListInteractor.swift
 //  MarvelTests
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit
@@ -15,5 +16,9 @@ class MarvelListInteractorMock: MarvelListInteractorProtocol {
 
     func getMarvelCharacters(offset: Int) {
         didCallGetMarvelCharacters = true
+    }
+    
+    func resetDidCalls() {
+        didCallGetMarvelCharacters = false
     }
 }

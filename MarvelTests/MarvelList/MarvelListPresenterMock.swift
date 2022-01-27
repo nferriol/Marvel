@@ -2,7 +2,8 @@
 //  MarvelListPresenterMock.swift
 //  MarvelTests
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit
@@ -25,5 +26,11 @@ class MarvelListPresenterMock: MarvelListPresenterProtocol {
 
     func didFailMarvelCharacters() {
         didCallDidFailMarvelCharacters = true
+    }
+    
+    func resetDidCalls() {
+        didCallGetMarvelCharacters = false
+        didCallDidGetMarvelCharacters = false
+        didCallDidFailMarvelCharacters = false
     }
 }

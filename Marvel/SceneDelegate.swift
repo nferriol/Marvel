@@ -2,8 +2,8 @@
 //  SceneDelegate.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
-//  Copyright © 2020 Nadal Ferriol. All rights reserved.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit

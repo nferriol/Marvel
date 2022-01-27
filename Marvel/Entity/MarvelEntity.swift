@@ -2,40 +2,48 @@
 //  MarvelEntity.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
-//  Copyright © 2020 Nadal Ferriol. All rights reserved.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit
 import Alamofire
 
 /// Marvel client configuration
-enum Marvel {
-    static let privateKey = "710da3314a82ef92a15d1dc2940d7d215638735d"
-    static let publicKey = "e568a0374652a3165ca36e746f7e3be5"
-    static let baseUrl = "https://gateway.marvel.com/v1/public"
+struct Marvel {
+	static let baseUrl = "https://gateway.marvel.com/v1/public"
+	static let charactersEndpoint = "/characters"
+    
+	static let apiKey = "apikey"
+	static let tsKey = "ts"
+	static let hashKey = "hash"
+	static let limitKey = "limit"
+	static let offsetKey = "offset"
+	
+	static let privateKey = "710da3314a82ef92a15d1dc2940d7d215638735d"
+	static let publicKey = "e568a0374652a3165ca36e746f7e3be5"
 }
 
 class MarvelEntity: NSObject, MarvelEntityProtocol {
 
-    /// Method invoke to get the authtentication parameters
+    /// Method invoked to get the authtentication parameters
     /// - Returns: authentication parameters
     private func getAuthParams() -> [String: Any] {
         let ts = "\(Date().timeIntervalSince1970)"
         let hash = (ts + Marvel.privateKey + Marvel.publicKey).md5
 
-        return ["apikey": Marvel.publicKey, "ts": ts, "hash": hash]
+		return [Marvel.apiKey: Marvel.publicKey, Marvel.tsKey: ts, Marvel.hashKey: hash]
     }
 
-    /// Method invoke to get characters list
+    /// Method invoked to get characters list
     /// - Parameters:
     ///   - offset: characters offset
     ///   - completion: action if the characters has been got
     ///   - failure: action if the characters hasn't been got
     func getCharacters(offset: Int, completion: @escaping (MarvelCharacters) -> Void, failure: @escaping () -> Void) {
-        let url = "\(Marvel.baseUrl)/characters"
+		let url = "\(Marvel.baseUrl)\(Marvel.charactersEndpoint)"
         let limit = 20
-        let params: [String: Any] = ["limit": limit, "offset": offset]
+		let params: [String: Any] = [Marvel.limitKey: limit, Marvel.offsetKey: offset]
 
         request(url: url, params: params) { (marvelCharacters) in
             completion(marvelCharacters)
@@ -44,14 +52,14 @@ class MarvelEntity: NSObject, MarvelEntityProtocol {
         }
     }
 
-    /// Method invoke to get character detail
+    /// Method invoked to get character detail
     /// - Parameters:
     ///   - id: character id
     ///   - completion: action if the character has been got
     ///   - failure: action if the character hasn't been got
     func getCharacter(id: Int, completion: @escaping (MarvelCharacter) -> Void, failure: @escaping () -> Void) {
 
-        let url = "\(Marvel.baseUrl)/characters/\(id)"
+		let url = "\(Marvel.baseUrl)\(Marvel.charactersEndpoint)/\(id)"
         request(url: url) { (marvelCharacters) in
             if let character = marvelCharacters.results.first {
                 completion(character)
@@ -63,7 +71,7 @@ class MarvelEntity: NSObject, MarvelEntityProtocol {
         }
     }
 
-    /// Method invoke to send a request
+    /// Method invoked to send a request
     /// - Parameters:
     ///   - url: url of the service
     ///   - params: parameters of the request

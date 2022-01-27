@@ -2,41 +2,45 @@
 //  MarvelUITests.swift
 //  MarvelUITests
 //
-//  Created by Nadal Ferriol on 02/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import XCTest
 
 class MarvelUITests: XCTestCase {
 
+    static var timeout = 20.0
+    var app:XCUIApplication!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
     }
+    
+    func testMarvelList() {
+        let table = app.tables.firstMatch
+        let cell = table.cells.firstMatch
+        let name = cell.staticTexts[MarvelAccessibilityIdentifier.marvelListCharacterName.rawValue]
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let exists = NSPredicate(format: "exists == 1")
+        expectation(for: exists, evaluatedWith: name, handler: nil)
+        waitForExpectations(timeout: MarvelUITests.timeout, handler: nil)
     }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    
+    func testMarvelDetail() {
+        let table = app.tables.firstMatch
+        let cell = table.cells.firstMatch
+        cell.tap()
+        let name = app.staticTexts[MarvelAccessibilityIdentifier.marvelDetailCharacterName.rawValue]
+        
+        let exists = NSPredicate(format: "exists == 1")
+        expectation(for: exists, evaluatedWith: name, handler: nil)
+        waitForExpectations(timeout: MarvelUITests.timeout, handler: nil)
     }
 }

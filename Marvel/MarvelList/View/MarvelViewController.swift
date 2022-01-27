@@ -2,7 +2,8 @@
 //  MarvelViewController.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 04/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit

@@ -2,7 +2,8 @@
 //  MarvelDetailPresentes.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import Foundation
@@ -14,19 +15,19 @@ public class MarvelDetailPresenter: MarvelDetailPresenterProtocol {
     /// Interactor of the presenter
     var interactor: MarvelDetailInteractorProtocol?
 
-    /// Method invoke to get the character detail
+    /// Method invoked to get the character detail
     func getMarvelCharacter() {
         interactor?.getMarvelCharacter()
     }
 
-    /// Method invoke when the character wil be updated
+    /// Method invoked when the character wil be updated
     /// - Parameter model: charaters model
     func didGetMarvelCharacter(character: MarvelCharacter) {
         let character: MarvelDetailCharacterModel = MarvelDetailCharacterModel.init(marvelCharacter: character)
         view?.didGetMarvelCharacter(model: character)
     }
 
-    /// Method invoke when the character update fail
+    /// Method invoked when the character update fail
     func didFailMarvelCharacter() {
         view?.didFailMarvelCharacter()
     }

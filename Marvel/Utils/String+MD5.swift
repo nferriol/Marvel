@@ -2,8 +2,8 @@
 //  String+MD5.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
-//  Copyright © 2020 Nadal Ferriol. All rights reserved.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 
@@ -12,7 +12,7 @@ import CommonCrypto
 
 extension String {
     
-    /// Method invoke to codifier string with MD5
+    /// Method invoked to codifier string with MD5
   var md5: String {
     let length = Int(CC_MD5_DIGEST_LENGTH)
     let messageData = data(using:.utf8)!

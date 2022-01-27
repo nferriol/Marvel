@@ -1,21 +1,33 @@
 //
-//  MarvelCharacterListModel.swift
+//  MarvelListCharacterModel.swift
 //  Marvel
 //
-//  Created by Nadal Ferriol on 05/11/2020.
-//  Copyright © 2020 Nadal Ferriol. All rights reserved.
+//  Created by Nadal Ferriol.
+//  Copyright © 2022 Nadal Ferriol. All rights reserved.
 //
 
 import UIKit
 
-struct MarvelCharacterListModel {
+struct MarvelListModel {
+    
+    /// Character list model
+    let characters: [MarvelListCharacterModel]
+    /// Exist more characters
+    let moreCharacters: Bool
+
+    init(characters: [MarvelListCharacterModel], more: Bool) {
+        (self.characters, self.moreCharacters) = (characters, more)
+    }
+}
+
+struct MarvelListCharacterModel {
     
     /// Id of the character
     var id: Int
     /// Name of the character
     var name: String
     /// Url of the image
-    var imageUrl: String
+    var photoUrl: String
     
     /// Init character model with marvel character
     /// - Parameters:
@@ -29,6 +41,6 @@ struct MarvelCharacterListModel {
             url = "https\(url.dropFirst("http".count))"
         }
 
-        imageUrl = url
+        photoUrl = url
     }
 }
